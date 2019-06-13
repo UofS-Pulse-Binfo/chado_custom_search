@@ -1,0 +1,6 @@
+name = Chado Custom Search API
+description = Provides a API for creating custom search forms without the use of Drupal Views.
+core = 7.x
+package = Chado Custom Search
+dependencies[] = tripal
+dependencies[] = tripal_chado

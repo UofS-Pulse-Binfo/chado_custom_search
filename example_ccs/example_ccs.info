@@ -1,0 +1,7 @@
+name = Chado Custom Search EXAMPLE
+description = Provides examples using the Chado Custom Search API.
+core = 7.x
+package = Views
+dependencies[] = tripal
+dependencies[] = tripal_chado
+dependencies[] = chado_custom_search_api

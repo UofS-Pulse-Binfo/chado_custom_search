@@ -4,6 +4,14 @@
 
 Provides custom search functionality for those who don't wish to use Drupal Views.
 
+Why might you want to use this module?
+- Gives you complete control of the query so you can tweak performance.
+- Removes query-determination overhead of Drupal Views for better performance.
+- Lets you make quick custom searches which can be under version control.
+- Saves you from having to render the result table, generate the filter form,
+  handle the user input and execute the query.
+- Lets you focus on customizing only what you want to!
+
 ## Chado Custom Search API
 
 1. Implement `hook_chado_custom_search` to tell the API about the search you would like to create.

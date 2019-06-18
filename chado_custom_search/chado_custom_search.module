@@ -5,3 +5,60 @@
  * Hook Implementations for this module.
  */
 
+// Include the API.
+require_once 'chado_custom_search.api.inc';
+
+/**
+ * Implement hook_menu().
+ */
+function chado_custom_search_menu() {
+  $items = [];
+
+  // Retrieve all defined chado custom searches.
+  $searches = get_all_chado_custom_search_info();
+
+  // For each defined search, create a menu item.
+  foreach ($searches as $machine_name => $info) {
+
+    // @tdodo make config to make search show up in menu.
+    $items[ $info['path'] ] = array(
+      'title' => $info['title'],
+      'description' => t($info['description']),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => ['chado_custom_search_form', $machine_name],
+      'access arguments' => $info['permissions'],
+      'file' => $info['file'],
+      'file path' => drupal_get_path('module', $info['module']),
+      'type' => MENU_CALLBACK,
+    );
+  }
+  return $items;
+}
+
+/**
+ * Provides the search page for any chado custom search.
+ *
+ * NOTE: This form is dynamic based on the information
+ * provided in hook_ccsearch_info().
+ *
+ * @param array $form
+ *   Drupal's default form array.
+ * @param array $form_state
+ *   The current state of the form.
+ * @return array
+ *   The fully defined form including filter options and results.
+ */
+function chado_custom_search_form($form, $form_state) {
+  // @debug dpm($form_state, 'form state');
+
+  $machine_name = $form_state['build_info']['args'][0];
+  $info = get_chado_custom_search($machine_name);
+  // @debug dpm($info, 'info');
+
+  $form['header'] = [
+    '#type' => 'markup',
+    '#markup' => '<p>' . $info['description'] . '</p>',
+  ];
+
+  return $form;
+}

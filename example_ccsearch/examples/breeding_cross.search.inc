@@ -1,22 +1,27 @@
 <?php
+
 /**
  * @file
- * And Example for the Chado Custom Search API.
+ * Implementation of Breeding Cross Search.
  */
 
 /**
- * Implement hook_chado_custom_search().
+ * Describes the breeding_cross_search to the Chado Custom Search API.
  */
-function example_css_chado_custom_search() {
-  $searches = [];
-  
-  $searches[] = [
+function breeding_cross_search_ccsearch_info() {
+  $info = [
+    'module' => 'example_ccsearch',
+    // A title and description for the search.
+    // Used in the menu item, as well as, on the search page.
     'title' => 'Breeding Cross Search',
-    'description' => '',
-    'path' => 'search/cross',
-    'menu' => [
-      '
-    ],
+    'description' => 'A simple search for finding parents of breeding crosses.',
+    // The path at which to find the search.
+    'path' => 'search-crosses',
+    // The permissions needed to access the search.
+    // Must be an array.
+    'permissions' => ['access content'],
+    // All the remaining function definitions are in this file.
+    'file' => 'examples/breeding_cross.search.inc',
     // Lists the columns in your results table.
     'fields' => [
       'cross_name' => 'Cross Name',
@@ -53,28 +58,28 @@ function example_css_chado_custom_search() {
     'query_function' => 'breeding_cross_search_query',
     'form_alter' => 'breeding_cross_search_form',
   ];
-  
-  return $searches;
+
+  return $info;
 }
 
 /**
  * Determine the query for the breeding cross search.
  *
  * @param array $filter_results
- *    An array containing values submitted from the filter form by the user keyed by the 
- *    filters set in hook_chado_custom_search(). If the form hasn't been submitted it
- *    will contain any defaults set. All filter keys will be defined regardless of
- *    whether it has a value.
+ *   An array containing values submitted from the filter form by the user
+ *   keyed by the filters set in hook_chado_custom_search(). If the form hasn't
+ *   been submitted it will contain any defaults set. All filter keys will be
+ *   defined regardless of whether it has a value.
  * @param bool $form_submitted
- *    Indicates whether the form has been submitted by the user.
+ *   Indicates whether the form has been submitted by the user.
  */
  function breeding_cross_search_query($filter_results, $form_submitted) {
- 
+
    // We want to show an example crossing block if the user hasn't searched yet.
    // As such we set defaults in hook_chado_custom_search() for crossing block
    // season and year. This way we can query regardless of whether the form has
    // has been submitted.
-   $query = "SELECT child.name as child, mom.name as mom, dad.name as dad 
+   $query = "SELECT child.name as child, mom.name as mom, dad.name as dad
      FROM {stock} mom
      LEFT JOIN {stock_relationship} relmom ON relmom.subject_id=mom.stock_id
      LEFT JOIN {stock} child ON relmom.object_id=child.stock_id
@@ -83,34 +88,34 @@ function example_css_chado_custom_search() {
      WHERE
        relmom.type_id IN (SELECT cvterm_id FROM chado.cvterm WHERE name~'maternal') AND
        reldad.type_id IN (SELECT cvterm_id FROM chado.cvterm WHERE name~'paternal')";
-     
-     // Now we add the where arguments based on the filter results.
-     // NOTE: make your placeholders match the key in the $filter_results array.
-     //--------------------------------------------------------------------------
-     // Cross Name.
-     if (!empty($filter_results['cross_name'])) {
-       $query .= ' AND child.name = :cross_name';
-     }
-     
-     // Maternal Parent.
-     if (!empty($filter_results['mom_name'])) {
-       $query .= ' AND mom.name = :mom_name';
-     }
-     
-     // Paternal Parent.
-     if (!empty($filter_results['dad_name'])) {
-       $query .= ' AND dad.name = :dad_name';
-     }
-     
-     // Crossingblock Season.
-     if (!empty($filter_results['block_season'])) {
-       $query .= ' AND season.value = :block_season';
-     }
-     
-     // Crossingblock Year.
-     if (!empty($filter_results['block_year'])) {
-       $query .= ' AND year.value = :block_year';
-     }
-     
-     return $query;
- }
+
+  // Now we add the where arguments based on the filter results.
+  // NOTE: make your placeholders match the key in the $filter_results array.
+  //--------------------------------------------------------------------------
+  // Cross Name.
+  if (!empty($filter_results['cross_name'])) {
+    $query .= ' AND child.name = :cross_name';
+  }
+
+  // Maternal Parent.
+  if (!empty($filter_results['mom_name'])) {
+    $query .= ' AND mom.name = :mom_name';
+  }
+
+  // Paternal Parent.
+  if (!empty($filter_results['dad_name'])) {
+    $query .= ' AND dad.name = :dad_name';
+  }
+
+  // Crossingblock Season.
+  if (!empty($filter_results['block_season'])) {
+    $query .= ' AND season.value = :block_season';
+  }
+
+  // Crossingblock Year.
+  if (!empty($filter_results['block_year'])) {
+    $query .= ' AND year.value = :block_year';
+  }
+
+  return $query;
+}

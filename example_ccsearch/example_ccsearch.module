@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * And Example for the Chado Custom Search API.
+ */
+
+require_once 'examples/breeding_cross.search.inc';
+
+/**
+ * Implement hook_chado_custom_search().
+ *
+ * This hook simply lists the machine name of the searches so that we can find
+ * the info hook. We've done this for performance reasons.
+ */
+function example_ccsearch_chado_custom_search() {
+  $searches = [];
+
+  $searches['breeding_cross_search'] = 'Breeding Cross Search';
+
+  return $searches;
+}

@@ -1,6 +1,6 @@
 # Chado Custom Search
 
-**UNDER DEVELOPMENT: DESIGN PHASE**
+**UNDER DEVELOPMENT: TESTING PHASE**
 
 Provides custom search functionality for those who don't wish to use Drupal Views.
 

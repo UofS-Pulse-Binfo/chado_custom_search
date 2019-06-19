@@ -21,12 +21,6 @@ class ChadoCustomSearch {
   public static $title = 'Custom Chado Search';
 
   /**
-   * The machine name of the search. This should not include spaces or special
-   * characters.
-   */
-  public static $machine_name = 'custom_chado_search';
-
-  /**
    * The machine name of the module providing this search.
    */
   public static $module = 'custom_chado_search';
@@ -83,17 +77,63 @@ class ChadoCustomSearch {
   // --------------------------------------------------------------------------
 
   /**
+   * The values submitted through the filter form by the user.
+   */
+  public $values;
+
+  /**
+   * Whether the user clicked the search button.
+   */
+  public $submitted;
+
+  /**
    * Instantiates a new Chado Custom Search object.
    */
   public function __construct() {
+    $class = get_called_class();
 
+    foreach ($class::$info['filters'] as $name => $details) {
+      $this->values[$name] = (isset($details['default'])) ? $details['default'] : NULL;
+    }
+    $this->submitted = FALSE;
+  }
+
+  /**
+   * Sets the values from the form based on user input.
+   */
+  public function setValues($filter_values) {
+    $this->submitted = TRUE;
+    $this->values = $filter_values;
+  }
+
+  /**
+   * Uses the class defined query and values to retrieve the results.
+   */
+  public function getResults() {
+
+    // Grab the query defined for this specific child.
+    $query = '';
+    $args = [];
+    $this->getQuery($query, $args);
+
+    // Execute it.
+    return chado_query($query, $args)->fetchAll();
   }
 
   // --------------------------------------------------------------------------
   //                     OVERRIDEABLE FUNCTIONS
   // --------------------------------------------------------------------------
 
-  public function form ($form, $form_state) {
+  /**
+   * Generate the filter form.
+   *
+   * The base class will generate textfields for each filter defined in $info,
+   * set defaults, labels and descriptions, as well as, create the search
+   * button.
+   *
+   * Extend this method to alter the filter form.
+   */
+  public function form($form, $form_state) {
     $class = get_called_class();
 
     $form['header'] = [
@@ -119,61 +159,62 @@ class ChadoCustomSearch {
   }
 
   /**
-   * Determine the query for the breeding cross search.
+   * Defines the query and arguments to use for the search.
    *
-   * @param array $filter_results
-   *   An array containing values submitted from the filter form by the user
-   *   keyed by the filters set in hook_chado_custom_search(). If the form hasn't
-   *   been submitted it will contain any defaults set. All filter keys will be
-   *   defined regardless of whether it has a value.
-   * @param bool $form_submitted
-   *   Indicates whether the form has been submitted by the user.
+   * MUST OVERRIDE!
+   *
+   * @param string $query
+   *   The full SQL query to execute. This will be executed using chado_query()
+   *   so use curly brackets appropriately. Use :placeholders for any values.
+   * @param array $args
+   *   An array of arguments to pass to chado_query(). Keys must be the
+   *   placeholders in the query and values should be what you want them set to.
    */
-  public function breeding_cross_search_query($filter_results, $form_submitted) {
+  public function getQuery(&$query, &$args) {}
 
-     // We want to show an example crossing block if the user hasn't searched yet.
-     // As such we set defaults in hook_chado_custom_search() for crossing block
-     // season and year. This way we can query regardless of whether the form has
-     // has been submitted.
-     $query = "SELECT child.name as child, mom.name as mom, dad.name as dad
-       FROM {stock} mom
-       LEFT JOIN {stock_relationship} relmom ON relmom.subject_id=mom.stock_id
-       LEFT JOIN {stock} child ON relmom.object_id=child.stock_id
-       LEFT JOIN {stock_relationship} reldad ON reldad.object_id=child.stock_id
-       LEFT JOIN {stock} dad ON dad.stock_id=reldad.subject_id
-       WHERE
-         relmom.type_id IN (SELECT cvterm_id FROM chado.cvterm WHERE name~'maternal') AND
-         reldad.type_id IN (SELECT cvterm_id FROM chado.cvterm WHERE name~'paternal')";
+  /**
+   * Format the results within the $form array.
+   *
+   * The base class will format the results as a table.
+   *
+   * @param array $form
+   *   The current form array.
+   * @param array $results
+   *   The results to format. This will be an array of standard objects where
+   *   the keys map to the keys in $info['fields'].
+   */
+  public function formatResults(&$form, $results) {
+    $class = get_called_class();
 
-    // Now we add the where arguments based on the filter results.
-    // NOTE: make your placeholders match the key in the $filter_results array.
-    //--------------------------------------------------------------------------
-    // Cross Name.
-    if (!empty($filter_results['cross_name'])) {
-      $query .= ' AND child.name = :cross_name';
+    $table = [
+      'attributes' => [],
+      'caption' => '',
+      'colgroups' => [],
+      'sticky' => FALSE,
+      'empty' => '',
+    ];
+    $table['header'] = [];
+    $template_row = [];
+    foreach ($class::$info['fields'] as $name => $label) {
+      $table['header'][$name] = $label;
+      $template_row[$name] = '';
     }
 
-    // Maternal Parent.
-    if (!empty($filter_results['mom_name'])) {
-      $query .= ' AND mom.name = :mom_name';
+    $table['rows'] = [];
+    foreach ($results as $r) {
+      $row = [];
+      foreach ($template_row as $key => $default) {
+        if (isset($r->{$key})) {
+          $row[$key] = $r->{$key};
+        }
+      }
+      $table['rows'][] = $row;
     }
 
-    // Paternal Parent.
-    if (!empty($filter_results['dad_name'])) {
-      $query .= ' AND dad.name = :dad_name';
-    }
-
-    // Crossingblock Season.
-    if (!empty($filter_results['block_season'])) {
-      $query .= ' AND season.value = :block_season';
-    }
-
-    // Crossingblock Year.
-    if (!empty($filter_results['block_year'])) {
-      $query .= ' AND year.value = :block_year';
-    }
-
-    return $query;
+    $form['results'] = [
+      '#type' => 'markup',
+      '#markup' => theme_table($table),
+    ];
   }
 
 }

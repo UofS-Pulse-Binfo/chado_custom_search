@@ -37,7 +37,7 @@ function chado_custom_search_menu() {
  * Provides the search page for any chado custom search.
  *
  * NOTE: This form is dynamic based on the information
- * provided in hook_ccsearch_info().
+ * provided in the search class.
  *
  * @param array $form
  *   Drupal's default form array.
@@ -46,14 +46,28 @@ function chado_custom_search_menu() {
  * @return array
  *   The fully defined form including filter options and results.
  */
-function chado_custom_search_form($form, $form_state) {
-  // @debug dpm($form_state, 'form state');
+function chado_custom_search_form($form, &$form_state) {
 
-  $class_name = $form_state['build_info']['args'][0];
-  // @debug dpm($info, 'info');
+  // Instantiate the search class.
+  $class = $form_state['build_info']['args'][0];
+  $search = new $class;
 
-  $search = new $class_name;
+  // Get the form based on the search class.
   $form = $search->form($form, $form_state);
 
+  // If we have values then we need to query!
+  if (isset($form_state['values']) && !empty($form_state['values'])) {
+    $search->setValues($form_state['values'], TRUE);
+    $results = $search->getResults();
+    $search->formatResults($form, $results);
+  }
+
   return $form;
+}
+
+/**
+ * Submit for chado_custom_search_form().
+ */
+function chado_custom_search_form_submit(&$form, &$form_state) {
+  $form_state['rebuild'] = TRUE;
 }

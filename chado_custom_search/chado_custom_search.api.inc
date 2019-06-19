@@ -43,32 +43,13 @@ function get_chado_custom_search($machine_name) {
  * @return array
  *   An array of all defined searches.
  */
-function get_all_chado_custom_search_info() {
+function get_all_chado_custom_searches() {
   $searches = [];
 
   // Call hook_chado_custom_search() to get a list of chado custom searches.
   $defined_searches = module_invoke_all('chado_custom_search');
   // @debug dpm($defined_searches, 'defined searches');
 
-  // Then iterate through each one compiling the info.
-  foreach ($defined_searches as $machine_name => $title) {
-    $info_fn = $machine_name . '_ccsearch_info';
-    if (function_exists($info_fn)) {
-      $searches[$machine_name] = call_user_func($info_fn);
-
-      // @todo check each search has the desired keys.
-
-    }
-    else {
-      tripal_report_error(
-        'chado_custom_search',
-        TRIPAL_WARNING,
-        'No information function defined for :name. Please define :info according to the API specifications.',
-        [':name' => $machine_name, ':info' => $info_fn]
-      );
-    }
-  }
-
   // Return results.
-  return $searches;
+  return $defined_searches;
 }

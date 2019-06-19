@@ -4,8 +4,6 @@
  * And Example for the Chado Custom Search API.
  */
 
-require_once 'examples/breeding_cross.search.inc';
-
 /**
  * Implement hook_chado_custom_search().
  *
@@ -15,7 +13,7 @@ require_once 'examples/breeding_cross.search.inc';
 function example_ccsearch_chado_custom_search() {
   $searches = [];
 
-  $searches['breeding_cross_search'] = 'Breeding Cross Search';
+  $searches['BreedingCrossSearch'] = 'Breeding Cross Search';
 
   return $searches;
 }

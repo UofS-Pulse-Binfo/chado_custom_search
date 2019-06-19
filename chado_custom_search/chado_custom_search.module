@@ -15,23 +15,21 @@ function chado_custom_search_menu() {
   $items = [];
 
   // Retrieve all defined chado custom searches.
-  $searches = get_all_chado_custom_search_info();
+  $searches = get_all_chado_custom_searches();
 
   // For each defined search, create a menu item.
-  foreach ($searches as $machine_name => $info) {
-
-    // @tdodo make config to make search show up in menu.
-    $items[ $info['path'] ] = array(
-      'title' => $info['title'],
-      'description' => t($info['description']),
+  foreach ($searches as $class_name => $info) {
+    $path = $class_name::$menu['path'];
+    $items[ $path ] = [
+      'title' => $class_name::$title,
+      'description' => t($class_name::$description),
       'page callback' => 'drupal_get_form',
-      'page arguments' => ['chado_custom_search_form', $machine_name],
-      'access arguments' => $info['permissions'],
-      'file' => $info['file'],
-      'file path' => drupal_get_path('module', $info['module']),
+      'page arguments' => ['chado_custom_search_form', $class_name],
+      'access arguments' => $class_name::$permissions,
       'type' => MENU_CALLBACK,
-    );
+    ];
   }
+
   return $items;
 }
 
@@ -51,14 +49,11 @@ function chado_custom_search_menu() {
 function chado_custom_search_form($form, $form_state) {
   // @debug dpm($form_state, 'form state');
 
-  $machine_name = $form_state['build_info']['args'][0];
-  $info = get_chado_custom_search($machine_name);
+  $class_name = $form_state['build_info']['args'][0];
   // @debug dpm($info, 'info');
 
-  $form['header'] = [
-    '#type' => 'markup',
-    '#markup' => '<p>' . $info['description'] . '</p>',
-  ];
+  $search = new $class_name;
+  $form = $search->form($form, $form_state);
 
   return $form;
 }

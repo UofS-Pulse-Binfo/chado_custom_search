@@ -5,3 +5,5 @@ package = Views
 dependencies[] = tripal
 dependencies[] = tripal_chado
 dependencies[] = chado_custom_search
+
+files[] = examples/BreedingCrossSearch.inc

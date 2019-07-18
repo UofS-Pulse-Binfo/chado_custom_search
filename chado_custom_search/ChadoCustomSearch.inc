@@ -112,8 +112,21 @@ class ChadoCustomSearch {
    * Sets the values from the form based on user input.
    */
   public function setValues($filter_values) {
+    $class = get_called_class();
+
+    // If we are setting values then we consider it submitted.
     $this->submitted = TRUE;
-    $this->values = $filter_values;
+
+    // For each filter value, either set the passed in value
+    // or set the default.
+    foreach ($class::$info['filters'] as $name => $details) {
+      if (isset($filter_values[$name])) {
+        $this->values[$name] = $filter_values[$name];
+      }
+      else {
+        $this->values[$name] = (isset($details['default'])) ? $details['default'] : NULL;
+      }
+    }
   }
 
   /**

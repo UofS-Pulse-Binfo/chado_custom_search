@@ -40,6 +40,16 @@ class ChadoCustomSearch {
   public static $permissions = ['access content'];
 
   /**
+   * If TRUE, this search will require the submit button to be clicked before
+   * executing the query; whereas, if FALSE it will be executed on the
+   * first page load without parameters.
+   *
+   * NOTE: to control the results without parameters check $this->submitted
+   * in getQuery() and if FALSE return your pre-submit query.
+   */
+  public static $require_submit = TRUE;
+
+  /**
    * This defined the hook_menu definition for this search. At a minimum the
    * path is required.
    */
@@ -206,6 +216,9 @@ class ChadoCustomSearch {
       foreach ($template_row as $key => $default) {
         if (isset($r->{$key})) {
           $row[$key] = $r->{$key};
+        }
+        else {
+          $row[$key] = '';
         }
       }
       $table['rows'][] = $row;

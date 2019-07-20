@@ -77,7 +77,7 @@ function chado_custom_search_form($form, &$form_state) {
 
   // If we have values then we need to query!
   $doQuery = FALSE;
-  $values = [];
+  $values = NULL;
   if (isset($form_state['values']) && !empty($form_state['values'])) {
     $doQuery = TRUE;
     $values = $form_state['values'];

@@ -363,11 +363,33 @@ class ChadoCustomSearch {
       );
     }
 
+    $form['pager_style'] = [
+      '#type' => 'markup',
+      '#markup' => '<style>
+      .pager-container {
+        width: 100%;
+        text-align: center;
+      }
+      .pager {
+        display: inline-block;
+      }
+      .pager-prev, .pager-next {
+        font-style: italic;
+      }
+      .pager-page {
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+      </style>',
+    ];
+
     $form['pager'] = [
       '#type' => 'markup',
-      '#markup' => $left_arrow . ' - Page ' . $page_num . ' - ' . $right_arrow,
-      '#prefix' => '<span class="pager">',
-      '#suffix' => '</span>',
+      '#markup' => '<span class="pager-prev">' . $left_arrow . '</span>'
+        . '<span class="pager-page">' . ' - Page ' . $page_num . ' - ' . '</span>'
+        . '<span class="pager-next">' . $right_arrow . '</span>',
+      '#prefix' => '<div class="pager-container"><div class="pager">',
+      '#suffix' => '</div></div>',
       '#weight' => 100,
     ];
 

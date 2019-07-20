@@ -55,7 +55,7 @@ class ChadoCustomSearch {
    * NOTE: Your query has to handle paging.
    */
   public static $pager = TRUE;
-  public static $num_items_per_page = 50;
+  public static $num_items_per_page = 25;
 
   /**
    * This defined the hook_menu definition for this search. At a minimum the
@@ -322,8 +322,8 @@ class ChadoCustomSearch {
     $page_num = (isset($q['page_num'])) ? $q['page_num'] : 1;
 
     // HTML codes for the left/right arrow.
-    $left_arrow = '&#171;';
-    $right_arrow = '&#187;';
+    $left_arrow = '&#8249;previous';
+    $right_arrow = 'next&#8250;';
 
     // Turn left/right arrow into a link if appropriate.
     // -- Left: if we are not at the beginning then link to the previous page.
@@ -365,7 +365,7 @@ class ChadoCustomSearch {
 
     $form['pager'] = [
       '#type' => 'markup',
-      '#markup' => $left_arrow . ' Page ' . $page_num . ' ' . $right_arrow,
+      '#markup' => $left_arrow . ' - Page ' . $page_num . ' - ' . $right_arrow,
       '#prefix' => '<span class="pager">',
       '#suffix' => '</span>',
       '#weight' => 100,

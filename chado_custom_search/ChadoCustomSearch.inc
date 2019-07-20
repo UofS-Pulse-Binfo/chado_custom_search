@@ -176,6 +176,7 @@ class ChadoCustomSearch {
    */
   public function form($form, $form_state) {
     $class = get_called_class();
+    $q = drupal_get_query_parameters();
 
     $form['header'] = [
       '#type' => 'markup',
@@ -183,11 +184,16 @@ class ChadoCustomSearch {
     ];
 
     foreach ($class::$info['filters'] as $name => $details) {
+      $default = (isset($details['default'])) ? $details['default'] : '';
+      if (isset($q[$name])) {
+        $default = $q[$name];
+      }
+
       $form[$name] = [
         '#type' => 'textfield',
         '#title' => $details['title'],
         '#description' => $details['help'],
-        '#default_value' => (isset($details['default'])) ? $details['default'] : '',
+        '#default_value' => $default,
       ];
     }
 

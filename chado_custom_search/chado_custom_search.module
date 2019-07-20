@@ -52,6 +52,12 @@ function chado_custom_search_form($form, &$form_state) {
   $class = $form_state['build_info']['args'][0];
   $search = new $class;
 
+  // Save the class name for use in the submit.
+  $form['class_name'] = [
+    '#type' => 'hidden',
+    '#value' => $class,
+  ];
+
   // Add CSS/JS as defined in the class. We do this here so that it can
   // be added to and/or altered in the form method.
   $form['#attached']['css'] = [];
@@ -77,6 +83,15 @@ function chado_custom_search_form($form, &$form_state) {
   }
   elseif ($search::$require_submit == FALSE) {
     $doQuery = TRUE;
+
+    // Ensure that initial query takes into account URL parameters if present.
+    $q = drupal_get_query_parameters();
+    $values = [];
+    foreach ($class::$info['filters'] as $name => $details) {
+      if (isset($q[$name])) {
+        $values[$name] = $q[$name];
+      }
+    }
   }
 
   if ($doQuery) {
@@ -92,5 +107,21 @@ function chado_custom_search_form($form, &$form_state) {
  * Submit for chado_custom_search_form().
  */
 function chado_custom_search_form_submit(&$form, &$form_state) {
-  $form_state['rebuild'] = TRUE;
+
+  // If we have values then we want to add them to the URL
+  // for bookmarking of searches.
+  if (isset($form_state['values']) && !empty($form_state['values'])) {
+
+    // We want to add the value of each filter to the path.
+    $params = [];
+    $class = $form_state['values']['class_name'];
+    foreach ($class::$info['filters'] as $name => $details) {
+      $params[$name] = $form_state['values'][$name];
+    }
+
+    $form_state['redirect'] = [
+      $class::$menu['path'],
+      ['query' => $params],
+    ];
+  }
 }

@@ -64,7 +64,16 @@ class ChadoCustomSearch {
   public static $info = [
     // Lists the columns in your results table.
     'fields' => [
-      'column_name' => 'Title',
+      'column_name' => [
+        'title' => 'Title',
+        // This keyval is optional. It's used to make the current
+        // column a link. The link is made automagically as long as
+        // you add the id_column to your query.
+        'entity_link' = [
+          'chado_table' => 'feature',
+          'id_column' => 'feature_id',
+        ],
+      ],
     ],
     // The filter criteria available to the user.
     // This is used to generate a search form which can be altered.
@@ -218,9 +227,17 @@ class ChadoCustomSearch {
     ];
     $table['header'] = [];
     $template_row = [];
-    foreach ($class::$info['fields'] as $name => $label) {
+    $link = [];
+    foreach ($class::$info['fields'] as $name => $details) {
+      $label = $details['title'];
       $table['header'][$name] = $label;
       $template_row[$name] = '';
+      if (isset($details['entity_link'])) {
+        $link[$name]['entity_link'] = $details['entity_link'];
+      }
+      else {
+        $link[$name]['entity_link'] = FALSE;
+      }
     }
 
     $table['rows'] = [];
@@ -229,6 +246,13 @@ class ChadoCustomSearch {
       foreach ($template_row as $key => $default) {
         if (isset($r->{$key})) {
           $row[$key] = $r->{$key};
+          if ($link[$key]['entity_link']) {
+            $entity_id = chado_get_record_entity_by_table(
+              $link[$key]['entity_link']['chado_table'],
+              $r->{$link[$key]['entity_link']['id_column']}
+            );
+            $row[$key] = l($r->{$key}, '/bio_data/'.$entity_id);
+          }
         }
         else {
           $row[$key] = '';

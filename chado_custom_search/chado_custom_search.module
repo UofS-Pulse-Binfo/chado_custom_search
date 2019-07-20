@@ -47,6 +47,7 @@ function chado_custom_search_menu() {
  *   The fully defined form including filter options and results.
  */
 function chado_custom_search_form($form, &$form_state) {
+  $q = drupal_get_query_parameters();
 
   // Instantiate the search class.
   $class = $form_state['build_info']['args'][0];
@@ -85,7 +86,6 @@ function chado_custom_search_form($form, &$form_state) {
     $doQuery = TRUE;
 
     // Ensure that initial query takes into account URL parameters if present.
-    $q = drupal_get_query_parameters();
     $values = [];
     foreach ($class::$info['filters'] as $name => $details) {
       if (isset($q[$name])) {
@@ -95,8 +95,13 @@ function chado_custom_search_form($form, &$form_state) {
   }
 
   if ($doQuery) {
+
     $search->setValues($values, TRUE);
-    $results = $search->getResults();
+
+    $offset = (isset($q['offset'])) ? $q['offset'] : 0;
+    if (!is_numeric($offset)) { $offset = 0; }
+    $results = $search->getResults($offset);
+
     $search->formatResults($form, $results);
   }
 

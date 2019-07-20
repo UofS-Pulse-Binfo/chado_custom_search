@@ -50,6 +50,14 @@ class ChadoCustomSearch {
   public static $require_submit = TRUE;
 
   /**
+   * Add a pager to search results
+   * with $num_items_per_page results on a single page.
+   * NOTE: Your query has to handle paging.
+   */
+  public static $pager = TRUE;
+  public static $num_items_per_page = 50;
+
+  /**
    * This defined the hook_menu definition for this search. At a minimum the
    * path is required.
    */
@@ -150,12 +158,12 @@ class ChadoCustomSearch {
   /**
    * Uses the class defined query and values to retrieve the results.
    */
-  public function getResults() {
+  public function getResults($offset) {
 
     // Grab the query defined for this specific child.
     $query = '';
     $args = [];
-    $this->getQuery($query, $args);
+    $this->getQuery($query, $args, $offset);
 
     // Execute it.
     return chado_query($query, $args)->fetchAll();
@@ -216,8 +224,10 @@ class ChadoCustomSearch {
    * @param array $args
    *   An array of arguments to pass to chado_query(). Keys must be the
    *   placeholders in the query and values should be what you want them set to.
+   * @param $offset
+   *   The current offset. This is primarily used for pagers.
    */
-  public function getQuery(&$query, &$args) {}
+  public function getQuery(&$query, &$args, $offset) {}
 
   /**
    * Format the results within the $form array.
@@ -232,6 +242,7 @@ class ChadoCustomSearch {
    */
   public function formatResults(&$form, $results) {
     $class = get_called_class();
+    $search = new $class;
 
     $table = [
       'attributes' => [],
@@ -256,24 +267,35 @@ class ChadoCustomSearch {
     }
 
     $table['rows'] = [];
+    $num_rows = 0;
     foreach ($results as $r) {
-      $row = [];
-      foreach ($template_row as $key => $default) {
-        if (isset($r->{$key})) {
-          $row[$key] = $r->{$key};
-          if ($link[$key]['entity_link']) {
-            $entity_id = chado_get_record_entity_by_table(
-              $link[$key]['entity_link']['chado_table'],
-              $r->{$link[$key]['entity_link']['id_column']}
-            );
-            $row[$key] = l($r->{$key}, '/bio_data/'.$entity_id);
+      $num_rows++;
+      if ($num_rows <= $class::$num_items_per_page) {
+        $row = [];
+        foreach ($template_row as $key => $default) {
+          if (isset($r->{$key})) {
+            $row[$key] = $r->{$key};
+            if ($link[$key]['entity_link']) {
+              $entity_id = chado_get_record_entity_by_table(
+                $link[$key]['entity_link']['chado_table'],
+                $r->{$link[$key]['entity_link']['id_column']}
+              );
+              $row[$key] = l($r->{$key}, '/bio_data/'.$entity_id);
+            }
+          }
+          else {
+            $row[$key] = '';
           }
         }
-        else {
-          $row[$key] = '';
-        }
+        $table['rows'][] = $row;
       }
-      $table['rows'][] = $row;
+      else {
+        break;
+      }
+    }
+
+    if ($class::$pager == TRUE) {
+      $form = $search->add_pager($form, $num_rows);
     }
 
     $form['results'] = [
@@ -282,4 +304,73 @@ class ChadoCustomSearch {
     ];
   }
 
+  /**
+   * Adds a pager to the form.
+   *
+   * @param $form
+   *   The form array to add the pager to.
+   * @param $form_state
+   *   The current state of the form.
+   * @return
+   *   The original form with the pager added.
+   */
+  public function add_pager($form, $num_results) {
+
+    // Determine the current page and offset using the query parameters.
+    $q = drupal_get_query_parameters();
+    $offset = (isset($q['offset'])) ? $q['offset'] : 0;
+    $page_num = (isset($q['page_num'])) ? $q['page_num'] : 1;
+
+    // HTML codes for the left/right arrow.
+    $left_arrow = '&#171;';
+    $right_arrow = '&#187;';
+
+    // Turn left/right arrow into a link if appropriate.
+    // -- Left: if we are not at the beginning then link to the previous page.
+    if ($offset != 0) {
+      // Determine the previous page info.
+      $prev_offset = $offset - $this::$num_items_per_page;
+      if ($prev_offset < 0) { $prev_offset = 0; }
+      $prev_page_num = ($prev_offset == 0) ? 1 : $page_num - 1;
+
+      // Create a link to the prev page.
+      $params = $q;
+      $params['offset'] = $prev_offset;
+      $params['page_num'] = $prev_page_num;
+      $left_arrow = l(
+        $left_arrow,
+        $this::$menu['path'],
+        ['query' => $params,
+        'html' => TRUE]
+      );
+    }
+    // -- Right: if we are not at the end then link to the next page.
+    if ($num_results > $this::$num_items_per_page) {
+      // Determine the next page info.
+      $next_offset = $offset + $this::$num_items_per_page;
+      if ($next_offset < 0) { $next_offset = 0; }
+      $next_page_num = ($next_offset == 0) ? 1 : $page_num + 1;
+
+      // Create a link to the next page.
+      $params = $q;
+      $params['offset'] = $next_offset;
+      $params['page_num'] = $next_page_num;
+      $right_arrow = l(
+        $right_arrow,
+        $this::$menu['path'],
+        ['query' => $params,
+        'html' => TRUE]
+      );
+    }
+
+    $form['pager'] = [
+      '#type' => 'markup',
+      '#markup' => $left_arrow . ' Page ' . $page_num . ' ' . $right_arrow,
+      '#prefix' => '<span class="pager">',
+      '#suffix' => '</span>',
+      '#weight' => 100,
+    ];
+
+    return $form;
+  }
 }

@@ -59,6 +59,15 @@ class ChadoCustomSearch {
   ];
 
   /**
+   * Add CSS/JS to the form/results page.
+   * NOTE: paths supplied should be relative to $module.
+   */
+  public static $attached = [
+    'css' => [],
+    'js' => [],
+  ];
+
+  /**
    * Information regarding the fields and filters for this search.
    */
   public static $info = [
@@ -69,7 +78,7 @@ class ChadoCustomSearch {
         // This keyval is optional. It's used to make the current
         // column a link. The link is made automagically as long as
         // you add the id_column to your query.
-        'entity_link' = [
+        'entity_link' => [
           'chado_table' => 'feature',
           'id_column' => 'feature_id',
         ],

@@ -52,6 +52,19 @@ function chado_custom_search_form($form, &$form_state) {
   $class = $form_state['build_info']['args'][0];
   $search = new $class;
 
+  // Add CSS/JS as defined in the class. We do this here so that it can
+  // be added to and/or altered in the form method.
+  $form['#attached']['css'] = [];
+  foreach ($search::$attached['css'] as $subpath) {
+    $path = drupal_get_path('module', $search::$module) . '/' . $subpath;
+    $form['#attached']['css'][] = $path;
+  }
+  $form['#attached']['js'] = [];
+  foreach ($search::$attached['js'] as $subpath) {
+    $path = drupal_get_path('module', $search::$module) . '/' . $subpath;
+    $form['#attached']['js'][] = $path;
+  }
+
   // Get the form based on the search class.
   $form = $search->form($form, $form_state);
 

@@ -208,10 +208,17 @@ class ChadoCustomSearch {
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $class::$button_text,
+      '#weight' => 10,
     ];
 
     return $form;
   }
+
+  /**
+   * Allows custom searches to validate the form results.
+   * Use form_set_error() to signal invalid values.
+   */
+  public function validateForm($form, $form_state) { }
 
   /**
    * Defines the query and arguments to use for the search.
@@ -301,6 +308,7 @@ class ChadoCustomSearch {
     $form['results'] = [
       '#type' => 'markup',
       '#markup' => theme_table($table),
+      '#weight' => 20,
     ];
   }
 

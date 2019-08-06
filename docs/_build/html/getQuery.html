@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>getQuery(): Define your search query &mdash; Chado Custom Search API  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Editable Constants" href="editable-constants.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Chado Custom Search API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editable-constants.html">Editable Constants</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">getQuery(): Define your search query</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#filter-criteria">Filter Criteria</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paging">Paging</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chado Custom Search API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>getQuery(): Define your search query</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getQuery.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getquery-define-your-search-query">
+<h1>getQuery(): Define your search query<a class="headerlink" href="#getquery-define-your-search-query" title="Permalink to this headline">¶</a></h1>
+<p>This API does not programmatically generate the query for you. Instead, you must define the query yourself in the <code class="docutils literal notranslate"><span class="pre">getQuery()</span></code> method of your custom search class. This design decision was made based on the core goal of the API (Faster, optimized searches) and ensures I don’t make assumptions about your data but rather leave it in the hands of the expert: you!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">I highly recommend testing your search queries on a full clone of your production site as the PostgreSQL query planner will base the underlying method on the data being queried. As such, the most performant query on a small test site will not be the same as on your production site.</p>
+</div>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="sd">/**</span>
+<span class="sd"> * Defines the query and arguments to use for the search.</span>
+<span class="sd"> *</span>
+<span class="sd"> * MUST OVERRIDE!</span>
+<span class="sd"> *</span>
+<span class="sd"> * @param string $query</span>
+<span class="sd"> *   The full SQL query to execute. This will be executed using chado_query()</span>
+<span class="sd"> *   so use curly brackets appropriately. Use :placeholders for any values.</span>
+<span class="sd"> * @param array $args</span>
+<span class="sd"> *   An array of arguments to pass to chado_query(). Keys must be the</span>
+<span class="sd"> *   placeholders in the query and values should be what you want them set to.</span>
+<span class="sd"> * @param $offset</span>
+<span class="sd"> *   The current offset. This is primarily used for pagers.</span>
+<span class="sd"> */</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">getQuery</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$query</span><span class="p">,</span> <span class="o">&amp;</span><span class="nv">$args</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">)</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>To start, define the above method in your custom search class. At the top of your method, the <code class="docutils literal notranslate"><span class="pre">$query</span></code> variable will be empty -it is up to you to defined the query as a string. Lets look at a simple example with no filters:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">function</span> <span class="nf">getQuery</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$query</span><span class="p">,</span> <span class="o">&amp;</span><span class="nv">$args</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="nv">$query</span> <span class="o">=</span> <span class="s1">&#39;SELECT organism_id, genus, species FROM {organism}&#39;</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This custom search will display all organisms in your chado database to the user in the results table. It does not take any filter criteria into account nor does it support paging.</p>
+<div class="section" id="filter-criteria">
+<h2>Filter Criteria<a class="headerlink" href="#filter-criteria" title="Permalink to this headline">¶</a></h2>
+<p>Filtering of queries is recommended to be done through Drupal placeholders. This helps protect your site from SQL injection and other security concerns. To implement Drupal placeholders in your query, add <code class="docutils literal notranslate"><span class="pre">:placeholdername</span></code> where you would normally concatenate a value and then add <code class="docutils literal notranslate"><span class="pre">:placeholdername</span> <span class="pre">=&gt;</span> <span class="pre">$value</span></code> to the <code class="docutils literal notranslate"><span class="pre">$args</span></code> array. The Chado Custom Search API will handle the rest!</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">function</span> <span class="nf">getQuery</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$query</span><span class="p">,</span> <span class="o">&amp;</span><span class="nv">$args</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// Retrieve the filter results already set.</span>
+  <span class="nv">$filter_results</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">values</span><span class="p">;</span>
+
+  <span class="c1">// Define the base query.</span>
+  <span class="nv">$query</span> <span class="o">=</span> <span class="s1">&#39;SELECT organism_id, genus, species FROM {organism}&#39;</span><span class="p">;</span>
+
+  <span class="c1">// If a filter value is available then add it to a list of</span>
+  <span class="c1">// where clauses to be added.</span>
+  <span class="nv">$where</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="c1">// -- genus</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$filter_results</span><span class="p">[</span><span class="s1">&#39;genus&#39;</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$where</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;genus = :genus&#39;</span><span class="p">;</span>
+    <span class="nv">$args</span><span class="p">[</span><span class="s1">&#39;:genus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$filter_results</span><span class="p">[</span><span class="s1">&#39;genus&#39;</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="c1">// -- species</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$filter_results</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$where</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;species = :species&#39;</span><span class="p">;</span>
+    <span class="nv">$args</span><span class="p">[</span><span class="s1">&#39;:species&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$filter_results</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Then after you&#39;ve checked all your filter criteria,</span>
+  <span class="c1">// add the where clauses to your base query.</span>
+  <span class="nv">$query</span> <span class="o">.=</span> <span class="s1">&#39; WHERE &#39;</span> <span class="o">.</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">&#39; AND &#39;</span><span class="p">,</span> <span class="nv">$where</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="paging">
+<h2>Paging<a class="headerlink" href="#paging" title="Permalink to this headline">¶</a></h2>
+<p>The Chado Custom Search API handles determining the offset required for the page the user is on based on the number of items per page you set in the editable constants. As such, all you need to do in your query, is add the limit/offset as so:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">function</span> <span class="nf">getQuery</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$query</span><span class="p">,</span> <span class="o">&amp;</span><span class="nv">$args</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// Determine what your query should be based on the filter criteria.</span>
+
+  <span class="c1">// Handle paging.</span>
+  <span class="nv">$limit</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">::</span><span class="nv">$num_items_per_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="nv">$query</span> <span class="o">.=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">.</span> <span class="s1">&#39; LIMIT &#39;</span> <span class="o">.</span> <span class="nv">$limit</span> <span class="o">.</span> <span class="s1">&#39; OFFSET &#39;</span> <span class="o">.</span> <span class="nv">$offset</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="editable-constants.html" class="btn btn-neutral" title="Editable Constants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lacey Sanderson et al., University of Saskatchewan, Pulse Bioinformatics.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

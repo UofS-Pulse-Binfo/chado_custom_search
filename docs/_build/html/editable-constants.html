@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Editable Constants &mdash; Chado Custom Search API  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="getQuery(): Define your search query" href="getQuery.html" />
+    <link rel="prev" title="Quick Start" href="quickstart.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Chado Custom Search API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Editable Constants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#title">Title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module">Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permissions">Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#require-submit">Require Submit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paging">Paging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#menu">Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attached-css-js">Attached CSS/JS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#field-filter-information">Field/Filter Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#button-text">Button Text</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getQuery.html">getQuery(): Define your search query</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chado Custom Search API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Editable Constants</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/editable-constants.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="editable-constants">
+<h1>Editable Constants<a class="headerlink" href="#editable-constants" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="https://github.com/UofS-Pulse-Binfo/chado_custom_search/blob/master/chado_custom_search/ChadoCustomSearch.inc">ChadoCustomSearch</a> defines a number of editable constants to make it easy to customize your search.</p>
+<div class="section" id="title">
+<h2>Title<a class="headerlink" href="#title" title="Permalink to this headline">¶</a></h2>
+<p>The human readable title of this search. This will be used in listings and shown on the search page as the title.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$title</span> <span class="o">=</span> <span class="s1">&#39;Custom Chado Search&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module">
+<h2>Module<a class="headerlink" href="#module" title="Permalink to this headline">¶</a></h2>
+<p>The machine name of the module providing this search.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$module</span> <span class="o">=</span> <span class="s1">&#39;custom_chado_search&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>A description of this search. This is shown at the top of the search page and used for the menu item.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$description</span> <span class="o">=</span> <span class="s1">&#39;A default search which must be extended.&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="permissions">
+<h2>Permissions<a class="headerlink" href="#permissions" title="Permalink to this headline">¶</a></h2>
+<p>The machine names of the permissions with access to this search. This is used to map your search to existing permissions. It must be an array and is used in hook_menu(). Some examples include ‘access content’ and ‘administer tripal’.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$permissions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;access content&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>If you want to use custom permissions, make sure to defined them first in your module file using <a class="reference external" href="https://www.drupal.org/docs/7/creating-custom-modules/specifying-a-custom-permission-for-a-new-page#custom-permission">hook_permission()</a>.</p>
+</div>
+<div class="section" id="require-submit">
+<h2>Require Submit<a class="headerlink" href="#require-submit" title="Permalink to this headline">¶</a></h2>
+<p>If TRUE, this search will require the submit button to be clicked before executing the query; whereas, if FALSE it will be executed on the first page load without parameters.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$require_submit</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Keep this in mind when building your query in the <code class="docutils literal notranslate"><span class="pre">getQuery()</span></code> method. If this variable is set to FALSE, then defaults will be supplied to <code class="docutils literal notranslate"><span class="pre">getQuery()</span></code> as the filter values.</p>
+</div>
+</div>
+<div class="section" id="paging">
+<h2>Paging<a class="headerlink" href="#paging" title="Permalink to this headline">¶</a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">$pager</span></code> is true, the API will add a simple pager to your search results with a previous and next page link as well as indication of what page they are on. A simple pager is used for speed since it doesn’t require counting the search results which is notoriously slow in PostgreSQL. You can also control the number of items per page using <code class="docutils literal notranslate"><span class="pre">$num_items_per_page</span></code>.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$pager</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="k">public</span> <span class="k">static</span> <span class="nv">$num_items_per_page</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The API handles genering the pager on the search page, determining which links should be available and changing the filter values to keep track of the page. <strong>You need to ensure your getQuery() method returns the appropriate results for a given page.</strong></p>
+</div>
+</div>
+<div class="section" id="menu">
+<h2>Menu<a class="headerlink" href="#menu" title="Permalink to this headline">¶</a></h2>
+<p>This defined the hook_menu definition for this search. At a minimum the path is required.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$menu</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;path&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;search/chado&#39;</span><span class="p">,</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="attached-css-js">
+<h2>Attached CSS/JS<a class="headerlink" href="#attached-css-js" title="Permalink to this headline">¶</a></h2>
+<p>This allows you to add custom CSS and JS files to your search form and results page.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$attached</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;css&#39;</span> <span class="o">=&gt;</span> <span class="p">[],</span>
+  <span class="s1">&#39;js&#39;</span> <span class="o">=&gt;</span> <span class="p">[],</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="field-filter-information">
+<h2>Field/Filter Information<a class="headerlink" href="#field-filter-information" title="Permalink to this headline">¶</a></h2>
+<p>This is arguably the most important editable constant. This is where you indicate the columns you want displayed in your results table (fields) and the filters you want made available to your users (filters).</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$info</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1">// Lists the columns in your results table.</span>
+  <span class="s1">&#39;fields&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s1">&#39;column_name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+      <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+      <span class="c1">// This keyval is optional. It&#39;s used to make the current</span>
+      <span class="c1">// column a link. The link is made automagically as long as</span>
+      <span class="c1">// you add the id_column to your query.</span>
+      <span class="s1">&#39;entity_link&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">&#39;chado_table&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;feature&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;id_column&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;feature_id&#39;</span><span class="p">,</span>
+      <span class="p">],</span>
+    <span class="p">],</span>
+  <span class="p">],</span>
+  <span class="c1">// The filter criteria available to the user.</span>
+  <span class="c1">// This is used to generate a search form which can be altered.</span>
+  <span class="s1">&#39;filters&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s1">&#39;column_name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+      <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;help&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;A description for users as to what this filter is.&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+  <span class="p">],</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+<p>This API supports result links for Tripal Entities. Define the entity link for any field/column in your results table and the API will look up the appropriate bio_data_id given the chado base table id and the name of the base table. This is done using the <code class="docutils literal notranslate"><span class="pre">chado_get_record_entity_by_table()</span></code> API function provided by Tripal.</p>
+</div>
+<div class="section" id="button-text">
+<h2>Button Text<a class="headerlink" href="#button-text" title="Permalink to this headline">¶</a></h2>
+<p>This allows you to customize the text shown on the submit button at the bottom of the filter form.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="nv">$button_text</span> <span class="o">=</span> <span class="s1">&#39;Search&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getQuery.html" class="btn btn-neutral float-right" title="getQuery(): Define your search query" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="quickstart.html" class="btn btn-neutral" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lacey Sanderson et al., University of Saskatchewan, Pulse Bioinformatics.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

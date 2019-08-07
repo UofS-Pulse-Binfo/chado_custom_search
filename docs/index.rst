@@ -23,4 +23,7 @@ This API also gives you complete control over the search. Override any portion o
 
    quickstart
    editable-constants
-   getQuery 
+   getQuery
+   form
+   formatResults
+   add_pager

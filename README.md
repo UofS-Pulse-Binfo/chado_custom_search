@@ -1,7 +1,5 @@
 # Chado Custom Search
 
-**UNDER DEVELOPMENT: TESTING PHASE**
-
 Provides custom search functionality for those who don't wish to use Drupal Views.
 
 Why might you want to use this module?
@@ -35,3 +33,7 @@ function example_ccsearch_chado_custom_search() {
 2. Create a class which extends ChadoCustomSearch. At a minimum you need to set the editable static constants and the getQuery() method. See [BreedingCrossSearch](https://github.com/UofS-Pulse-Binfo/chado_custom_search/blob/master/example_ccsearch/examples/BreedingCrossSearch.inc) for an example.
 
 3. Clear the cache, navigate to the path defined in the class and enjoy your custom search!
+
+## Documentation
+
+For more information on what you can accomplish or how to get started, see [our ReadtheDocs Documentation](https://chado-custom-search-api.readthedocs.io/en/latest/#).

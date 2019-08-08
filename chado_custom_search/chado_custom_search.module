@@ -93,6 +93,17 @@ function chado_custom_search_form($form, &$form_state) {
       }
     }
   }
+  elseif(!empty($q)) {
+    $doQuery = TRUE;
+
+    // Ensure that initial query takes into account URL parameters if present.
+    $values = [];
+    foreach ($class::$info['filters'] as $name => $details) {
+      if (isset($q[$name])) {
+        $values[$name] = $q[$name];
+      }
+    }
+  }
 
   if ($doQuery) {
 

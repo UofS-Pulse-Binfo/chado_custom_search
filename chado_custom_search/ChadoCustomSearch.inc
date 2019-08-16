@@ -166,7 +166,10 @@ class ChadoCustomSearch {
     $this->getQuery($query, $args, $offset);
 
     // Execute it.
-    return chado_query($query, $args)->fetchAll();
+    if (!empty($query)) {
+      return chado_query($query, $args)->fetchAll();
+    }
+    return FALSE;
   }
 
   // --------------------------------------------------------------------------

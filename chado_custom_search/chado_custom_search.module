@@ -28,6 +28,7 @@ function chado_custom_search_menu() {
       'access arguments' => $class_name::$permissions,
       'type' => MENU_CALLBACK,
     ];
+
   }
 
   return $items;
@@ -113,7 +114,9 @@ function chado_custom_search_form($form, &$form_state) {
     if (!is_numeric($offset)) { $offset = 0; }
     $results = $search->getResults($offset);
 
-    $search->formatResults($form, $results);
+    if ($results !== FALSE) {
+      $search->formatResults($form, $results);
+    }
   }
 
   return $form;

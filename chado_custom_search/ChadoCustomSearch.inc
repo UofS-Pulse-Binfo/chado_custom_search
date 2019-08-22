@@ -290,7 +290,12 @@ class ChadoCustomSearch {
                 $link[$key]['entity_link']['chado_table'],
                 $r->{$link[$key]['entity_link']['id_column']}
               );
-              $row[$key] = l($r->{$key}, '/bio_data/'.$entity_id);
+              if ($entity_id) {
+                $row[$key] = l($r->{$key}, '/bio_data/'.$entity_id);
+              }
+              else {
+                $row[$key] = $r->{$key};
+              }
             }
           }
           else {

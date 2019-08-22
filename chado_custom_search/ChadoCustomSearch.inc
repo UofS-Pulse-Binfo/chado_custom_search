@@ -211,7 +211,7 @@ class ChadoCustomSearch {
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $class::$button_text,
-      '#weight' => 10,
+      '#weight' => 20,
     ];
 
     return $form;
@@ -310,9 +310,12 @@ class ChadoCustomSearch {
 
     $form['results'] = [
       '#type' => 'markup',
-      '#markup' => theme_table($table),
-      '#weight' => 20,
+      '#theme' => 'table',
+      '#weight' => 30,
     ];
+    foreach ($table as $key => $value) {
+      $form['results']['#' . $key] = $value;
+    }
   }
 
   /**

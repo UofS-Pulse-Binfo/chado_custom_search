@@ -146,7 +146,7 @@ function chado_custom_search_form_submit(&$form, &$form_state) {
     $params = [];
     $class = $form_state['values']['class_name'];
     foreach ($class::$info['filters'] as $name => $details) {
-      $params[$name] = $form_state['values'][$name];
+      $params[$name] = trim($form_state['values'][$name]);
     }
 
     $form_state['redirect'] = [

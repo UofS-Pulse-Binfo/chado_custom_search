@@ -7,6 +7,7 @@
 
 // Include the API.
 require_once 'chado_custom_search.api.inc';
+require_once 'includes/TestSearch.inc';
 
 /**
  * Implement hook_menu().

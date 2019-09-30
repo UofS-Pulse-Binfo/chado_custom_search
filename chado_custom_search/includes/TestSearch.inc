@@ -112,7 +112,7 @@ class CoreTestingSearch extends ChadoCustomSearch {
     *   An array of arguments to pass to chado_query(). Keys must be the
     *   placeholders in the query and values should be what you want them set to.
     */
-   public function getQuery(&$query, &$args) {
+   public function getQuery(&$query, &$args, $offset) {
 
      // Retrieve the filter results already set.
      $filter_results = $this->values;

@@ -14,8 +14,10 @@
   </testsuites>
   <filter>
    <whitelist addUncoveredFilesFromWhitelist="true">
-     <directory suffix=".inc">./includes</directory>
-     <directory suffix=".php">./includes</directory>
+     <directory suffix=".inc">./chado_custom_search</directory>
+     <directory suffix=".php">./chado_custom_search</directory>
+     <directory suffix=".inc">./chado_custom_search/includes</directory>
+     <directory suffix=".php">./chado_custom_search/includes</directory>
    </whitelist>
  </filter>
 </phpunit>

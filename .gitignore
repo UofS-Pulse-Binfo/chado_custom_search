@@ -1,3 +1,5 @@
 docs/_build
+tests/_build
 .env
 vendor/
+*DS_Store*

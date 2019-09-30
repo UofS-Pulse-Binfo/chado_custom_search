@@ -1,3 +1,7 @@
+![Tripal Dependency](https://img.shields.io/badge/tripal-%3E=3.0-brightgreen)
+![Module is Generic](https://img.shields.io/badge/generic-confirmed-brightgreen)
+
+
 # Chado Custom Search
 
 Provides custom search functionality for those who don't wish to use Drupal Views.

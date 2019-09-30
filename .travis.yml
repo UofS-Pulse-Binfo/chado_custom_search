@@ -24,7 +24,7 @@ script:
   - sleep 30 # We pause here so postgres and apache complete booting up
   - docker exec -it tripal drush pm-enable -y chado_custom_search
   - docker exec -it tripal yum install -y php-pecl-xdebug.x86_64
-  - docker exec -it tripal bash -c "cd /modules/chado_custom_search && composer install && DRUPAL_ROOT=/var/www/html IS_TRAVIS=TRUE ./vendor/bin/phpunit--coverage-clover ./clover.xml"
+  - docker exec -it tripal bash -c "cd /modules/chado_custom_search && composer install && DRUPAL_ROOT=/var/www/html IS_TRAVIS=TRUE ./vendor/bin/phpunit --coverage-clover ./clover.xml"
 
 after_script:
   - ./cc-test-reporter after-build clover.xml --debug -t clover -p /var/www/html/sites/all/modules/custom/chado_custom_search --exit-code $TRAVIS_TEST_RESULT

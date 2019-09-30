@@ -1,6 +1,6 @@
 ![Tripal Dependency](https://img.shields.io/badge/tripal-%3E=3.0-brightgreen)
 ![Module is Generic](https://img.shields.io/badge/generic-confirmed-brightgreen)
-
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/UofS-Pulse-Binfo/chado_custom_search?include_prereleases)
 
 # Chado Custom Search
 

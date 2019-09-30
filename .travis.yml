@@ -9,7 +9,7 @@ services:
 
 env:
   - DRUPAL_ROOT=/var/www/html
-  - CC_TEST_REPORTER_ID=9b1f1e30f8b6d39612761508a38442e2577d58a7ecb314d6a9f505cc3533ee6b
+  - CC_TEST_REPORTER_ID=55fbff5d70e4569cfe78590f8384b8689ac2b736f7e35d55ef66a14bfcd8a9d2
 
 before_script:
   - docker pull statonlab/tripal3

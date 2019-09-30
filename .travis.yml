@@ -9,7 +9,6 @@ services:
 
 env:
   - DRUPAL_ROOT=/var/www/html IS_TRAVIS=TRUE CC_TEST_REPORTER_ID=9b1f1e30f8b6d39612761508a38442e2577d58a7ecb314d6a9f505cc3533ee6b
-  - DRUPAL_ROOT=/var/www/html
 
 before_script:
   - docker pull statonlab/tripal3

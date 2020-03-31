@@ -288,17 +288,28 @@ class ChadoCustomSearch {
       </style>',
     ];
 
-    $links = [];
-    foreach ($class::$download_formats as $format) {
-      $path = $class::$menu['path'] . '/' . $format['path_ending'];
-      $link_title = $format['link_title'];
-      $links[] = l($link_title, $path, ['query' => $q]);
+    // ONLY ADD LINKS IF THE USER HAS PERMISSION TO ACCESS THEM.
+    if (user_access('chado_search_api download')) {
+
+      $links = [];
+      foreach ($class::$download_formats as $format) {
+        $path = $class::$menu['path'] . '/' . $format['path_ending'];
+        $link_title = $format['link_title'];
+        $links[] = l($link_title, $path, ['query' => $q]);
+      }
+      $content = implode(', ', $links);
+    }
+    elseif (user_is_anonymous()) {
+      $content = "<em>Requires log in</em>";
+    }
+    else {
+      $content = "<em>Requires permission</em>";
     }
 
     $form['download'] = [
       '#type' => 'markup',
       '#prefix' => '<div class="download-link"><strong>Download: </strong>',
-      '#markup' => implode(', ', $links),
+      '#markup' => $content,
       '#suffix' => '</div>',
       '#weight' => 29,
     ];

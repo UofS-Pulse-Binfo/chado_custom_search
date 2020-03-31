@@ -39,7 +39,7 @@ function chado_custom_search_menu() {
       'title' => $class_name::$title . ': CSV',
       'page callback' => 'trpdownload_download_page',
       'page arguments' => ['chado_custom_search_csv'],
-      'access arguments' => ['access content'], //['chado_search_api download'],
+      'access arguments' => ['chado_search_api download'],
       'type' => MENU_CALLBACK,
     ];
 
@@ -48,13 +48,25 @@ function chado_custom_search_menu() {
       'title' => $class_name::$title . ': TSV',
       'page callback' => 'trpdownload_download_page',
       'page arguments' => ['chado_custom_search_tsv'],
-      'access arguments' => ['access content'], //['chado_search_api download'],
+      'access arguments' => ['chado_search_api download'],
       'type' => MENU_CALLBACK,
     ];
   }
 
   return $items;
 }
+
+/**
+ * Implements hook_permission().
+ */
+function chado_custom_search_permission() {
+  return array(
+    'chado_search_api download' => array(
+      'title' => t('Permission to download search results.'),
+    )
+  );
+}
+
 
 /**
  * Provides the search page for any chado custom search.

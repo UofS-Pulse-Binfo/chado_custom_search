@@ -108,6 +108,26 @@ class ChadoCustomSearch {
    */
   public static $button_text = 'Search';
 
+  /**
+   * Download formats available for this search. This is an array with the
+   * values describing each download page to link to.
+   */
+  public static $download_formats = [
+    [
+      // Optional: the machine name of the trpdownload_api integration.
+      'trpdownload_api' => 'chado_custom_search_csv',
+      // Required: the download page must be at [pathtosearch]/[unique ending]
+      // where the unique ending is specified here.
+      'path_ending' => 'csv',
+      // Required: The title to use for the link. This is best kept short.
+      'link_title' => 'CSV',
+    ],
+    [
+      'trpdownload_api' => 'chado_custom_search_tsv',
+      'path_ending' => 'tsv',
+      'link_title' => 'TSV',
+    ]];
+
   // --------------------------------------------------------------------------
   //                  PRIVATE MEMBERS -- DO NOT EDIT or OVERRIDE
   // --------------------------------------------------------------------------
@@ -238,6 +258,51 @@ class ChadoCustomSearch {
    *   The current offset. This is primarily used for pagers.
    */
   public function getQuery(&$query, &$args, $offset) {}
+
+  /**
+   * Formats the download formats into links to each download page.
+   *
+   * NOTE: This was designed with the Tripal Download API in mind but that is
+   * not a requirement for any custom formats
+   * though it is recommended for consistency.
+   *
+   * @param array $form
+   *   The current form array.
+   * @param array $q
+   *   The query parameters to pass on to the download page.
+   */
+  public function formatDownloadLinks(&$form, $q) {
+    $class = get_called_class();
+
+    $form['download_style'] = [
+      '#type' => 'markup',
+      '#markup' => '<style>
+        .download-link {
+          margin-left: 2px;
+          margin-top: 20px;
+          margin-bottom: 2px;
+        }
+        #chado-custom-search-form table {
+          margin-top: 0px;
+        }
+      </style>',
+    ];
+
+    $links = [];
+    foreach ($class::$download_formats as $format) {
+      $path = $class::$menu['path'] . '/' . $format['path_ending'];
+      $link_title = $format['link_title'];
+      $links[] = l($link_title, $path, ['query' => $q]);
+    }
+
+    $form['download'] = [
+      '#type' => 'markup',
+      '#prefix' => '<div class="download-link"><strong>Download: </strong>',
+      '#markup' => implode(', ', $links),
+      '#suffix' => '</div>',
+      '#weight' => 29,
+    ];
+  }
 
   /**
    * Format the results within the $form array.

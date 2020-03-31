@@ -7,6 +7,7 @@
 
 // Include the API.
 require_once 'chado_custom_search.api.inc';
+require_once 'includes/chado_search_api.download.inc';
 
 require_once 'ChadoCustomSearch.inc';
 require_once 'includes/TestSearch.inc';
@@ -32,6 +33,24 @@ function chado_custom_search_menu() {
       'type' => MENU_CALLBACK,
     ];
 
+    // DOWNLOADS:
+    // -- Comma-separated.
+    $items[$path . '/csv'] = [
+      'title' => $class_name::$title . ': CSV',
+      'page callback' => 'trpdownload_download_page',
+      'page arguments' => ['chado_custom_search_csv'],
+      'access arguments' => ['access content'], //['chado_search_api download'],
+      'type' => MENU_CALLBACK,
+    ];
+
+    // -- Tab-delimited.
+    $items[$path . '/tsv'] = [
+      'title' => $class_name::$title . ': TSV',
+      'page callback' => 'trpdownload_download_page',
+      'page arguments' => ['chado_custom_search_tsv'],
+      'access arguments' => ['access content'], //['chado_search_api download'],
+      'type' => MENU_CALLBACK,
+    ];
   }
 
   return $items;
@@ -118,6 +137,8 @@ function chado_custom_search_form($form, &$form_state) {
     $results = $search->getResults($offset);
 
     if ($results !== FALSE) {
+      $q['class'] = $class;
+      $search->formatDownloadLinks($form, $q);
       $search->formatResults($form, $results);
     }
   }

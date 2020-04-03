@@ -87,6 +87,9 @@ function chado_custom_search_form($form, &$form_state) {
   $class = $form_state['build_info']['args'][0];
   $search = new $class;
 
+  // Set the title as expected.
+  drupal_set_title($class::$title);
+
   // Save the class name for use in the submit.
   $form['class_name'] = [
     '#type' => 'hidden',

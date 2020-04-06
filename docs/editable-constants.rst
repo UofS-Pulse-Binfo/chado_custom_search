@@ -40,7 +40,7 @@ The machine names of the permissions with access to this search. This is used to
 
   public static $permissions = ['access content'];
 
-If you want to use custom permissions, make sure to defined them first in your module file using `hook_permission() <https://www.drupal.org/docs/7/creating-custom-modules/specifying-a-custom-permission-for-a-new-page#custom-permission>`_.
+If you want to use custom permissions, make sure to define them first in your module file using `hook_permission() <https://www.drupal.org/docs/7/creating-custom-modules/specifying-a-custom-permission-for-a-new-page#custom-permission>`_.
 
 Require Submit
 ----------------
@@ -58,7 +58,7 @@ If TRUE, this search will require the submit button to be clicked before executi
 Paging
 -------
 
-If ``$pager`` is true, the API will add a simple pager to your search results with a previous and next page link as well as indication of what page they are on. A simple pager is used for speed since it doesn't require counting the search results which is notoriously slow in PostgreSQL. You can also control the number of items per page using ``$num_items_per_page``.
+If ``$pager`` is TRUE, the API will add a simple pager to your search results with a previous and next page link as well as indication of what page they are on. A simple pager is used for speed since it doesn't require counting the search results which is notoriously slow in PostgreSQL. You can also control the number of items per page using ``$num_items_per_page``.
 
 .. code-block:: php
 
@@ -67,7 +67,7 @@ If ``$pager`` is true, the API will add a simple pager to your search results wi
 
 .. note::
 
-  The API handles genering the pager on the search page, determining which links should be available and changing the filter values to keep track of the page. **You need to ensure your getQuery() method returns the appropriate results for a given page.**
+  The API handles adding the pager to the search page. This includes determining which links should be available and changing the filter values to keep track of the page. **You need to ensure your getQuery() method returns the appropriate results for a given page.**
 
 Menu
 ------

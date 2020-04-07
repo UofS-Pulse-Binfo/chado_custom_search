@@ -34,7 +34,7 @@ class BreedingCrossSearch extends ChadoCustomSearch {
   public static $permissions = ['access content'];
 
   /**
-   * This defined the hook_menu definition for this search. At a minimum the
+   * This defines the hook_menu definition for this search. At a minimum the
    * path is required.
    */
   public static $menu = [
@@ -48,9 +48,15 @@ class BreedingCrossSearch extends ChadoCustomSearch {
   public static $info = [
     // Lists the columns in your results table.
     'fields' => [
-      'child_name' => 'Cross Name',
-      'mom_name' => 'Maternal Parent',
-      'dad_name' => 'Paternal Parent',
+      'child_name' => [
+        'title' => 'Cross Name'
+      ],
+      'mom_name' => [
+        'title' => 'Maternal Parent'
+      ],
+      'dad_name' => [
+        'title' => 'Paternal Parent'
+      ],
     ],
     // The filter criteria available to the user.
     // This is used to generate a search form which can be altered.
@@ -77,6 +83,12 @@ class BreedingCrossSearch extends ChadoCustomSearch {
   public static $button_text = 'Search';
 
   /**
+   * Indicates whether to show results when the page is first loaded (FALSE)
+   * or whether to require users click the submit button (TRUE).
+   */
+  public static $require_submit = TRUE;
+
+  /**
    * Determine the query for the breeding cross search.
    *
    * Searches for the parents of a given cross. It can be filtered by cross
@@ -91,8 +103,10 @@ class BreedingCrossSearch extends ChadoCustomSearch {
    * @param array $args
    *   An array of arguments to pass to chado_query(). Keys must be the
    *   placeholders in the query and values should be what you want them set to.
+   * @param integer $offset
+   *   The number of records to offset for the results. This is used in paging.
    */
-  public function getQuery(&$query, &$args) {
+  public function getQuery(&$query, &$args, $offset) {
 
     // Retrieve the filter results already set.
     $filter_results = $this->values;
@@ -131,6 +145,11 @@ class BreedingCrossSearch extends ChadoCustomSearch {
     }
 
     $query .= ' ORDER BY child.name ASC';
+
+    // Add the offset to the query for paging.
+    if ($offset and is_numeric($offset)) {
+      $query .= 'OFFSET ' . $offset;
+    }
     $query .= ' LIMIT 50';
   }
 }

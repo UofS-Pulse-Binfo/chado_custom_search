@@ -23,7 +23,8 @@ before_script:
 
 script:
   - docker run -it -d --rm --name tripal -v "$(pwd)":/modules/chado_custom_search statonlab/tripal3
-  - sleep 30 # We pause here so postgres and apache complete booting up
+  - sleep 45 # We pause here so postgres and apache complete booting up
+  - docker exec -it tripal cd modules && git clone https://github.com/tripal/trpdownload_api.git
   - docker exec -it tripal drush pm-enable -y chado_custom_search
   - docker exec -it tripal yum install -y php-pecl-xdebug.x86_64
   - docker exec -it tripal bash -c "cd /modules/chado_custom_search && composer install && DRUPAL_ROOT=/var/www/html IS_TRAVIS=TRUE ./vendor/bin/phpunit --coverage-clover ./clover.xml"

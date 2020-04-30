@@ -212,6 +212,7 @@ class ChadoCustomSearch {
     $form['header'] = [
       '#type' => 'markup',
       '#markup' => '<p>' . $class::$description . '</p>',
+      '#weight' => -10000,
     ];
 
     foreach ($class::$info['filters'] as $name => $details) {

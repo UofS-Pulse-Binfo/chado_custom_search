@@ -189,8 +189,15 @@ function chado_custom_search_form_submit(&$form, &$form_state) {
       }
       elseif (is_array($form_state['values'][$name])) {
         foreach ($form_state['values'][$name] as $key => $value) {
-          $params[$name][$key] = trim($value);  
-       }
+          if (is_string($value)) {
+            $params[$name][$key] = trim($value);
+          }
+          elseif (is_array($value)) {
+            foreach($value as $key2 => $value2) {
+              $params[$name][$key][$key2] = trim($value2);
+            }
+          }
+        }
       }
     }
 

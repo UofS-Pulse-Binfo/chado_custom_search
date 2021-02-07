@@ -357,7 +357,7 @@ class ChadoCustomSearch {
     $num_rows = 0;
     foreach ($results as $r) {
       $num_rows++;
-      if ($num_rows < $class::$num_items_per_page) {
+      if ($num_rows <= $class::$num_items_per_page) {
         $row = [];
         foreach ($template_row as $key => $default) {
           if (isset($r->{$key})) {

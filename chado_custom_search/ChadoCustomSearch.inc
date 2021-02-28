@@ -335,7 +335,7 @@ class ChadoCustomSearch {
       'attributes' => [],
       'caption' => '',
       'colgroups' => [],
-      'sticky' => FALSE,
+      'sticky' => TRUE,
       'empty' => '',
     ];
     $table['header'] = [];
